@@ -31,13 +31,13 @@ void Event(int pid, Clock *clock){
 
 
 void Send(int myid, int pid, Clock *clock){
-   Event(myid, clock);
+   clock->p[myid]++;
    MPI_Send(clock, sizeof(Clock), MPI_BYTE, pid, 0, MPI_COMM_WORLD);
    printf("Process: %d, Clock: (%d, %d, %d)\n", myid, clock->p[0], clock->p[1], clock->p[2]);
 }
 
 void Receive(int myid, int pid, Clock *clock){
-   Event(myid, clock);
+   clock->p[myid]++;
    Clock recv_clock;
    MPI_Recv(&recv_clock, sizeof(Clock), MPI_BYTE, pid, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
    clock->p[0] = Max(recv_clock.p[0], clock->p[0]);
